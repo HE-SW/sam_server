@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+tomlkit
+dependency_injector
+
+numpy
+torch
+torchvision
+click
+opencv-python 
+matplotlib 
+onnx 
+onnxruntime
+git+https://github.com/facebookresearch/segment-anything.git
