@@ -7,13 +7,13 @@ from service.ai import AiService
 
 ai_router: APIRouter = APIRouter()
 
-@ai_router.get("/get_sam_npy")
+@ai_router.get("/get_sam_npy/image_path")
 @inject
 async def get_npy_by_img_path(
     image_url:str,
     service: AiService = Depends(Provide[AiContainer.ai_service]),
 ):  
-    npy_bytes = service.get_image_npy_bytes(image_path=image_url)
+    npy_bytes = service.get_npy_bytes_by_image_path(image_path=image_url)
     filename = image_url.replace('.jpg', '.npy') if image_url.endswith('.jpg') else "embedding.npy"
 
     return Response(
@@ -22,3 +22,11 @@ async def get_npy_by_img_path(
         headers={"Content-Disposition": f'attachment; filename="{filename}"'}
     )
 
+@ai_router.get("/get_sam_npy/base64")
+@inject
+async def get_npy_by_base64(
+    service: AiService = Depends(Provide[AiContainer.ai_service]),
+):
+    return Response(
+        content=''
+    )

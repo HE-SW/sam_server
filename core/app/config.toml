@@ -1,3 +1,0 @@
-port = 7070
-host = "0.0.0.0"
-image_domain = "http://101.202.34.105/main-hosting/static"

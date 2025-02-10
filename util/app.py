@@ -1,4 +1,3 @@
-import tomlkit
 import uvicorn
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,15 +6,10 @@ from starlette.staticfiles import StaticFiles
 from container.constructor import Constructor as ContainerConstructor
 from controller.constructor import Constructor as RouterConstructor
 from util.custom_logging import api_logger
-
+from core.config import config
 class AppRunner:
     def __init__(self):
-        with open("core/app/config.toml", 'rb') as app_config_toml: 
-            config: tomlkit.TOMLDocument = tomlkit.load(app_config_toml)
-
-            self.port: int = int(config["port"])
-            self.host: str = config["host"]
-
+        self.config = config
         self.app: FastAPI = FastAPI()
 
         ContainerConstructor()
@@ -42,4 +36,4 @@ class AppRunner:
             return response
 
     def run(self):
-        uvicorn.run(self.app, port=self.port, host=self.host)
+        uvicorn.run(self.app, port=self.config.port, host=self.config.host)

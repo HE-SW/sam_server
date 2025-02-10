@@ -3,21 +3,17 @@ import numpy as np
 from io import BytesIO
 import urllib.request
 from abc import ABCMeta
-import tomlkit
 from segment_anything import SamPredictor
 from segment_anything.modeling.sam import Sam
 from dependency_injector.wiring import inject, Provide
-
+from core.config import config
 class AiService(metaclass=ABCMeta):
-    with open("core/app/config.toml", 'rb') as toml_file:
-        app_config: tomlkit.TOMLDocument = tomlkit.load(toml_file)
-
     @inject
     def __init__(self, sam_model:Sam):
         self.sam_predictor: SamPredictor = SamPredictor(sam_model)
 
-    def get_image_npy_bytes(self, image_path:str):
-        with urllib.request.urlopen(self.app_config["image_domain"]+image_path) as response:
+    def get_npy_bytes_by_image_path(self, image_path:str):
+        with urllib.request.urlopen(image_path) as response:
             image_bytes = np.asarray(bytearray(response.read()), dtype=np.uint8)
         image = cv2.imdecode(image_bytes, cv2.IMREAD_UNCHANGED)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
